@@ -1,5 +1,6 @@
 # Intergalactic Odyssey
-Intergalactic Odyssey is command line game wherehe user explores multiple galaxies, where they encounter issues that require problem-solving to advance.
+Intergalactic Odyssey is command line game. 
+The user explores multiple galaxies, where they encounter issues that require problem-solving to advance.
 
 The game is written in object-oriented Python. I am experimenting with using AI agents to write tests.
 
