@@ -7,6 +7,15 @@ class Odyssey():
     def start_game(self):
         print("I'm an odyssey!!!")
 
+        command = ''
+        while command != 'engage':
+            command = input("Type 'engage' to begin: ")
+
+        self.engage()
+
+    def engage(self):
+        print("Engaging...")
+
     @classmethod
     def get_instance_count(cls):
         return cls._instance_count
