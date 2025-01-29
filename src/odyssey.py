@@ -1,3 +1,5 @@
+from src.universe import Universe
+
 class Odyssey():
     _instance_count = 0
 
@@ -15,6 +17,7 @@ class Odyssey():
 
     def engage(self):
         print("Engaging...")
+        Universe()
 
     @classmethod
     def get_instance_count(cls):

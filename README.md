@@ -7,7 +7,7 @@ I am using test-driven development and experimenting with AI agents to write tes
 
 ## To run the game
 * Activate environment
-* From top-level directory: `python3 main.py`
+* From top-level directory: `python3 src/main.py`
 
 ## To run the test suite
 * From tests directory: `pytest`
