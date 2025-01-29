@@ -1,4 +1,4 @@
-from odyssey import Odyssey
+from src.odyssey import Odyssey
 
 def test_start_game_output(mocker, capsys):
     # Arrange

@@ -1,5 +1,5 @@
-from main import main
-from odyssey import Odyssey
+from src.main import main
+from src.odyssey import Odyssey
 
 def test_launch_script_output(mocker, capsys):
     # Arrange
