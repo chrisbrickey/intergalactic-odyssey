@@ -1,4 +1,4 @@
-from odyssey import Odyssey
+from src.odyssey import Odyssey
 
 def main():
     new_odyssey = Odyssey()
