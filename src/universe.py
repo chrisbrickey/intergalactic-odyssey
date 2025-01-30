@@ -3,6 +3,8 @@ from src.scene import Scene
 class Universe:
     def __init__(self):
         # TODO: Randomize the order before assigning to attribute
+        # TODO: Use input parameter (e.g. galaxy_count) to determine
+        # TODO: Determine if and where the input galaxy_count should be validated to prevent game from trying to play more galaxies than exist.
         self.scenes = self.create_scenes()
 
     def create_scenes(self):
