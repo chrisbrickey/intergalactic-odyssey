@@ -6,17 +6,20 @@ class Odyssey():
     def __init__(self):
         Odyssey._instance_count += 1
 
-    def start_game(self):
+    def run_game(self):
+        self.engage()
+        self.construct_universe()
+
+    def engage(self):
         print("I'm an odyssey!!!")
 
         command = ''
         while command != 'engage':
             command = input("Type 'engage' to begin: ")
 
-        self.engage()
-
-    def engage(self):
         print("Engaging...")
+
+    def construct_universe(self):
         Universe()
 
     @classmethod
