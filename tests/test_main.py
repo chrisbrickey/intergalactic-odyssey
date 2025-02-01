@@ -3,7 +3,7 @@ from src.odyssey import Odyssey
 
 def test_launch_script_output(mocker, capsys):
     # Arrange
-    mocker.patch('builtins.input', side_effect=['engage'])
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
 
     # Act
     main()
@@ -15,7 +15,7 @@ def test_launch_script_output(mocker, capsys):
 def test_launch_script_creates_odyssey_instance(mocker):
     # Arrange
     Odyssey.clear_instance_count()
-    mocker.patch('builtins.input', side_effect=['engage'])
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
 
     # Act
     main()

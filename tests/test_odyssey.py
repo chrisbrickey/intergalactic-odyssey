@@ -15,19 +15,19 @@ def new_odyssey():
 # TODO: Adapt test to focus only on engage method to prevent adding to mock_user_input as game expands
 def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mocker):
     # Arrange
-    mock_user_input = mocker.patch('builtins.input', side_effect=['not engage', 'still not engage', 'engage'])
+    mock_user_input = mocker.patch('builtins.input', side_effect=['not engage', 'still not engage', 'engage', '1'])
     mock_retrieve_universe = mocker.patch.object(new_odyssey, 'retrieve_universe')
 
     # Act
     new_odyssey.run_game()
 
     # Assert
-    assert mock_user_input.call_count == 3
+    assert mock_user_input.call_count == 4
     mock_retrieve_universe.assert_called_once()
 
 def test_engage_output(new_odyssey, mocker, capsys):
     # Arrange
-    mocker.patch('builtins.input', side_effect=['engage'])
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
 
     # Act
     new_odyssey.engage()
@@ -44,15 +44,48 @@ def test_retrieve_universe_output(new_odyssey, capsys):
     # Assert
     assert captured.out.endswith("what you've learned.\n")
 
-def test_select_starting_index_output(new_odyssey, capsys):
+def test_select_starting_index_output_user_input_valid(new_odyssey, mocker, capsys):
     # Arrange
     survey = Universe().galactic_survey
+    user_input = str(len(survey)) # user selects highest number displayed
+    mocker.patch('builtins.input', side_effect=[user_input])
 
     # Act
     result = new_odyssey.select_starting_index(survey)
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith("You're headed to Galaxy 1.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {user_input}.\n")
     assert type(result) == int
     assert result in range (0, len(survey))
+
+def test_select_starting_index_output_user_input_invalid(new_odyssey, mocker, capsys):
+    # Arrange
+    survey = Universe().galactic_survey
+    user_input = 'Galaxy 1' # cannot be parsed to int
+    mocker.patch('builtins.input', side_effect=[user_input])
+
+    # Act
+    result = new_odyssey.select_starting_index(survey)
+    captured = capsys.readouterr()
+
+    # Assert
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}.\n")
+    assert type(result) == int
+    assert result in range (0, len(survey))
+
+
+def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, mocker, capsys):
+    # Arrange
+    survey = Universe().galactic_survey
+    user_input = len(survey) + 1
+    mocker.patch('builtins.input', side_effect=[user_input])
+
+    # Act
+    result = new_odyssey.select_starting_index(survey)
+    captured = capsys.readouterr()
+
+    # Assert
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}.\n")
+    assert type(result) == int
+    assert result in range(0, len(survey))

@@ -2,7 +2,6 @@ from src.scene import Scene
 
 class Universe:
     def __init__(self):
-        # TODO: Randomize the order before assigning to attribute
         self.scenes = self.create_scenes()
         self.galactic_survey = self.create_galactic_survey()
 
@@ -20,7 +19,7 @@ class Universe:
         reward2 = 'Scorching Saber'
         galaxy2 = Scene(name2, description2, puzzle2, reward2)
 
-        # TODO: Add more scenes
+        # TODO: Randomize order; Add more scenes
         return [galaxy1, galaxy2]
 
     def create_galactic_survey(self):
