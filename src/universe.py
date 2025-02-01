@@ -4,6 +4,7 @@ class Universe:
     def __init__(self):
         # TODO: Randomize the order before assigning to attribute
         self.scenes = self.create_scenes()
+        self.galactic_survey = self.create_galactic_survey()
 
     def create_scenes(self):
         # TODO: Extract to config/scenes.yaml; config = yaml.safe_load(open("config/scenes.yaml"))
@@ -21,3 +22,10 @@ class Universe:
 
         # TODO: Add more scenes
         return [galaxy1, galaxy2]
+
+    def create_galactic_survey(self):
+        galactic_survey = []
+        for i, scene in enumerate(self.scenes):
+            galactic_survey.append([i, scene.name])
+
+        return galactic_survey
