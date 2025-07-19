@@ -42,6 +42,7 @@ class Odyssey():
             # Galaxy 2: <name>
 
         next_scene_index = survey[0][0]
+        next_scene_name = survey[0][1]
 
         # Watch out for off-by-one. User is working with figures that represent index + 1.
         user_selection = input("Enter the number of the galaxy you wish to explore first:  ")
@@ -49,11 +50,11 @@ class Odyssey():
         maximum = survey[-1][0] + 1
         if self.validate_input_text_to_int(user_selection, minimum, maximum):
             next_scene_index = int(user_selection) - 1
+            next_scene_name = survey[next_scene_index][1]
         else:
             print("\nYour entry is not valid so your itinerary has been selected for you.")
 
-        print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}.")
-
+        print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}: {next_scene_name}.")
         return next_scene_index
 
     @staticmethod
