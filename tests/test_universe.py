@@ -14,8 +14,7 @@ def new_universe():
     new_universe.value = None
 
 
-def test_attributes_on_creation(new_universe):
-    # .scenes
+def test_scenes_attribute_on_creation(new_universe):
     assert hasattr(new_universe, 'scenes')
     scenes = new_universe.scenes
     assert len(scenes) > 0
@@ -24,7 +23,7 @@ def test_attributes_on_creation(new_universe):
     for element in scenes:
         assert(type(element) == Scene)
 
-    # .galactic_survey
+def test_survey_attribute_on_creation(new_universe):
     assert hasattr(new_universe, 'galactic_survey')
     survey = new_universe.galactic_survey
     assert len(survey) == 2
