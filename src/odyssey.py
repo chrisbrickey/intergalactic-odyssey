@@ -5,12 +5,16 @@ class Odyssey():
 
     def __init__(self):
         Odyssey._instance_count += 1
+        self.universe = self.retrieve_universe()
+        self.game_plan = []
 
     def run_game(self):
         self.engage()
-        the_universe = self.retrieve_universe()
-        galactic_survey = the_universe.galactic_survey
-        starting_scene_index = self.select_starting_index(galactic_survey)
+        starting_scene_index = self.select_starting_index()
+
+        # TODO: use modulo or some pythonic way to generate remainder of game plan - randomly scramble the other indices
+        self.game_plan.append(starting_scene_index)
+
 
     def engage(self):
         print("I'm an odyssey!!!")
@@ -34,7 +38,10 @@ class Odyssey():
 
         return new_universe
 
-    def select_starting_index(self, survey):
+    def select_starting_index(self):
+        # TODO: have Odyssey create the Scenes (from yaml) and inject them into the universe.. instead of scenes being hard-coded in a universe.
+        survey = self.universe.galactic_survey
+
         print("\n\nThe most recent galactic survey uncovered the following galaxies.\n")
         for index, name in survey:
             print(f"Galaxy {(index + 1)}: {name}")

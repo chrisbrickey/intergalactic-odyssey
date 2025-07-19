@@ -25,6 +25,17 @@ def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mock
     assert mock_user_input.call_count == 4
     mock_retrieve_universe.assert_called_once()
 
+def test_run_game_constructs_game_plan(new_odyssey, mocker):
+    # Arrange
+    mock_user_input = mocker.patch('builtins.input', side_effect=['engage'])
+    mock_retrieve_universe = mocker.patch.object(new_odyssey, 'retrieve_universe')
+
+    # Act
+    new_odyssey.run_game()
+
+    # Assert
+    assert(len(new_odyssey.game_plan) == len(new_odyssey.universe.galactic_survey))
+
 def test_engage_output(new_odyssey, mocker, capsys):
     # Arrange
     mocker.patch('builtins.input', side_effect=['engage', '1'])
