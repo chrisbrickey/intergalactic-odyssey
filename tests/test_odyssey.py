@@ -25,17 +25,6 @@ def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mock
     assert mock_user_input.call_count == 4
     mock_retrieve_universe.assert_called_once()
 
-def test_engage_output(new_odyssey, mocker, capsys):
-    # Arrange
-    mocker.patch('builtins.input', side_effect=['engage', '1'])
-
-    # Act
-    new_odyssey.engage()
-    captured = capsys.readouterr()
-
-    # Assert
-    assert captured.out.startswith("I'm an odyssey!!!\n")
-
 def test_retrieve_universe_output(new_odyssey, capsys):
     # Act
     new_odyssey.retrieve_universe()

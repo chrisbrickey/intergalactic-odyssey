@@ -13,8 +13,6 @@ class Odyssey():
         starting_scene_index = self.select_starting_index(galactic_survey)
 
     def engage(self):
-        print("I'm an odyssey!!!")
-
         command = ''
         while command != 'engage':
             command = input("Type 'engage' to begin: ")
