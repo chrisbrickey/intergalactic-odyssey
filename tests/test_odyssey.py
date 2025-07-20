@@ -31,7 +31,8 @@ def test_retrieve_universe_output(new_odyssey, capsys):
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith("what you've learned.\n")
+    assert captured.out.startswith("\n\nYour mission is to explore")
+    assert captured.out.endswith("return home safely to share what you've learned.\n")
 
 def test_select_starting_index_output_user_input_valid(new_odyssey, mocker, capsys):
     # Arrange

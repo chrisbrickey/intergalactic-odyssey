@@ -27,7 +27,7 @@ class Odyssey():
         #  This changes the number (or proportion) of galaxies that must be visited.
 
         target_galaxy_count = len(new_universe.scenes)
-        intro_message = f"\n\nYour mission is to explore {target_galaxy_count} galaxies, accumulate new technolgies, and return home safely to share what you've learned."
+        intro_message = f"\n\nYour mission is to explore {target_galaxy_count} galaxies, accumulate new technologies, and return home safely to share what you've learned."
         print(intro_message)
 
         return new_universe
@@ -35,9 +35,7 @@ class Odyssey():
     def select_starting_index(self, survey):
         print("\n\nThe most recent galactic survey uncovered the following galaxies.\n")
         for index, name in survey:
-            print(f"Galaxy {(index + 1)}: {name}")
-            # Galaxy 1: <name>
-            # Galaxy 2: <name>
+            print(f"{(index + 1)}) {name}")
 
         next_scene_index = survey[0][0]
 
