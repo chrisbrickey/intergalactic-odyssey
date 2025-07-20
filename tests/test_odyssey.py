@@ -55,7 +55,7 @@ def test_select_starting_index_output_user_input_valid(new_odyssey, mocker, caps
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {user_input}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {user_input}: {survey[result][1]}.\n")
     assert type(result) == int
     assert result in range (0, len(survey))
 
@@ -70,7 +70,7 @@ def test_select_starting_index_output_user_input_invalid(new_odyssey, mocker, ca
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey[result][1]}.\n")
     assert type(result) == int
     assert result in range (0, len(survey))
 
@@ -86,6 +86,6 @@ def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, 
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey[result][1]}.\n")
     assert type(result) == int
     assert result in range(0, len(survey))

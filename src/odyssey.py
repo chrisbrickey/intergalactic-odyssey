@@ -52,7 +52,8 @@ class Odyssey():
         else:
             print("\nYour entry is not valid so your itinerary has been selected for you.")
 
-        print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}.")
+        next_scene_name = survey[next_scene_index][1]
+        print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}: {next_scene_name}.")
 
         return next_scene_index
 
