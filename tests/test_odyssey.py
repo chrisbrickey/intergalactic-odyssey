@@ -12,11 +12,15 @@ def new_odyssey():
    # Teardown
    new_odyssey.value = None
 
-# TODO: Adapt test to focus only on engage method to prevent adding to mock_user_input as game expands
+def test_odyssey_attributes_on_creation(new_odyssey):
+    assert new_odyssey.universe is None
+    assert new_odyssey.game_plan is None
+
 def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mocker):
     # Arrange
     mock_user_input = mocker.patch('builtins.input', side_effect=['not engage', 'still not engage', 'engage', '1'])
     mock_retrieve_universe = mocker.patch.object(new_odyssey, 'retrieve_universe')
+    mocker.patch.object(new_odyssey, 'develop_game_plan')
 
     # Act
     new_odyssey.run_game()
@@ -25,16 +29,31 @@ def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mock
     assert mock_user_input.call_count == 4
     mock_retrieve_universe.assert_called_once()
 
-def test_engage_output(new_odyssey, mocker, capsys):
+def test_run_game_retrieves_universe(new_odyssey, mocker):
     # Arrange
     mocker.patch('builtins.input', side_effect=['engage', '1'])
 
     # Act
-    new_odyssey.engage()
-    captured = capsys.readouterr()
+    new_odyssey.run_game()
 
     # Assert
-    assert captured.out.startswith("I'm an odyssey!!!\n")
+    assert new_odyssey.universe is not None
+    assert isinstance(new_odyssey.universe, Universe)
+
+# TODO: 1) improve test by testing that starting index is first
+#       2) add test that first index is selected as starting index in game plan
+def test_run_game_develops_game_plan(new_odyssey, mocker):
+    # Arrange
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
+
+    # Act
+    new_odyssey.run_game()
+    updated_game_plan = new_odyssey.game_plan
+
+    # Assert
+    assert updated_game_plan is not None
+    assert len(set(updated_game_plan)) == len(updated_game_plan)
+    assert len(updated_game_plan) == len(new_odyssey.universe.scenes)
 
 def test_retrieve_universe_output(new_odyssey, capsys):
     # Act

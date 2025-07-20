@@ -21,3 +21,10 @@ class Universe:
 
         # TODO: Randomize order; Add more scenes
         return [galaxy1, galaxy2]
+
+    # def scramble_survey(self, starting_index):
+    #     scrambled = []
+    #
+    #
+    #     self.galactic_survey = scrambled
+    #     return self.galactic_survey

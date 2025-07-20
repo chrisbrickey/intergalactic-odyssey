@@ -5,16 +5,17 @@ class Odyssey():
 
     def __init__(self):
         Odyssey._instance_count += 1
+        self.universe = None
+        self.game_plan = None
 
     def run_game(self):
         self.engage()
-        the_universe = self.retrieve_universe()
-        galactic_survey = the_universe.galactic_survey
-        starting_scene_index = self.select_starting_index(galactic_survey)
+
+        self.universe = self.retrieve_universe()
+        starting_scene_index = self.select_starting_index(self.universe.galactic_survey)
+        self.develop_game_plan(starting_scene_index)
 
     def engage(self):
-        print("I'm an odyssey!!!")
-
         command = ''
         while command != 'engage':
             command = input("Type 'engage' to begin: ")
@@ -37,9 +38,7 @@ class Odyssey():
     def select_starting_index(self, survey):
         print("\n\nThe most recent galactic survey uncovered the following galaxies.\n")
         for index, name in survey:
-            print(f"Galaxy {(index + 1)}: {name}")
-            # Galaxy 1: <name>
-            # Galaxy 2: <name>
+            print(f"{(index + 1)}) {name}")
 
         next_scene_index = survey[0][0]
 
@@ -56,6 +55,11 @@ class Odyssey():
         print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}: {next_scene_name}.")
 
         return next_scene_index
+
+    def develop_game_plan(self, starting_scene_index):
+        remaining_indices = list(range(0, len(self.universe.scenes)))
+        remaining_indices.remove(starting_scene_index)
+        self.game_plan = [starting_scene_index] + remaining_indices
 
     @staticmethod
     def validate_input_text_to_int(input_string, min, max):

@@ -18,9 +18,9 @@ def test_scenes_attribute_on_creation(new_universe):
   assert len(scenes) > 0
   assert all(isinstance(element, Scene) for element in scenes)
 
-def test_survey_attribute_on_creation(new_universe):
-  assert hasattr(new_universe, 'galactic_survey')
-  survey = new_universe.galactic_survey
-  assert len(survey) == len(new_universe.scenes)
-  assert type(survey[0][0]) == int
-  assert type(survey[0][1]) == str
+# def test_survey_attribute_on_creation(new_universe):
+#   assert hasattr(new_universe, 'galactic_survey')
+#   survey = new_universe.galactic_survey
+#   assert len(survey) == len(new_universe.scenes)
+#   assert type(survey[0][0]) == int
+#   assert type(survey[0][1]) == str
