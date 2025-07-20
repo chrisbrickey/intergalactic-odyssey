@@ -12,6 +12,16 @@ def new_odyssey():
    # Teardown
    new_odyssey.value = None
 
+@pytest.fixture(autouse=True)
+def universe_fixture():
+   # Setup
+   universe_fixture = Universe()
+
+   yield universe_fixture
+
+   # Teardown
+   universe_fixture.value = None
+
 def test_odyssey_attributes_on_creation(new_odyssey):
     assert new_odyssey.universe is None
     assert new_odyssey.game_plan is None
@@ -55,56 +65,59 @@ def test_run_game_develops_game_plan(new_odyssey, mocker):
     assert len(set(updated_game_plan)) == len(updated_game_plan)
     assert len(updated_game_plan) == len(new_odyssey.universe.scenes)
 
-def test_retrieve_universe_output(new_odyssey, capsys):
+def test_retrieve_universe_output(new_odyssey, universe_fixture, capsys):
     # Act
     new_odyssey.retrieve_universe()
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith("what you've learned.\n")
+    assert captured.out.startswith(f"\n\nYour mission is to explore {len(universe_fixture.scenes)}")
+    assert captured.out.endswith("return home safely to share what you've learned.\n")
 
-def test_select_starting_index_output_user_input_valid(new_odyssey, mocker, capsys):
-    # Arrange
-    survey = Universe().galactic_survey
-    user_input = str(len(survey)) # user selects highest number displayed
+def test_select_starting_index_output_user_input_valid(new_odyssey, universe_fixture, mocker, capsys):
+    test_survey = universe_fixture.galactic_survey
+    user_input = str(len(test_survey)) # user selects highest number displayed
     mocker.patch('builtins.input', side_effect=[user_input])
+    mocker.patch.object(new_odyssey, 'universe', universe_fixture)
 
     # Act
-    result = new_odyssey.select_starting_index(survey)
+    result = new_odyssey.select_starting_index()
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {user_input}: {survey[result][1]}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {user_input}: {test_survey[result][1]}.\n")
     assert type(result) == int
-    assert result in range (0, len(survey))
+    assert result in range (0, len(test_survey))
 
-def test_select_starting_index_output_user_input_invalid(new_odyssey, mocker, capsys):
+def test_select_starting_index_output_user_input_invalid(new_odyssey, universe_fixture, mocker, capsys):
     # Arrange
-    survey = Universe().galactic_survey
+    test_survey = universe_fixture.galactic_survey
     user_input = 'Galaxy 1' # cannot be parsed to int
     mocker.patch('builtins.input', side_effect=[user_input])
+    mocker.patch.object(new_odyssey, 'universe', universe_fixture)
 
     # Act
-    result = new_odyssey.select_starting_index(survey)
+    result = new_odyssey.select_starting_index()
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey[result][1]}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {test_survey[result][1]}.\n")
     assert type(result) == int
-    assert result in range (0, len(survey))
+    assert result in range (0, len(test_survey))
 
 
-def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, mocker, capsys):
+def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, universe_fixture, mocker, capsys):
     # Arrange
-    survey = Universe().galactic_survey
-    user_input = len(survey) + 1
+    test_survey = universe_fixture.galactic_survey
+    user_input = len(test_survey) + 1
     mocker.patch('builtins.input', side_effect=[user_input])
+    mocker.patch.object(new_odyssey, 'universe', universe_fixture)
 
     # Act
-    result = new_odyssey.select_starting_index(survey)
+    result = new_odyssey.select_starting_index()
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey[result][1]}.\n")
+    assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {test_survey[result][1]}.\n")
     assert type(result) == int
-    assert result in range(0, len(survey))
+    assert result in range(0, len(test_survey))

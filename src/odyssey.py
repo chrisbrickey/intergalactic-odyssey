@@ -10,9 +10,8 @@ class Odyssey():
 
     def run_game(self):
         self.engage()
-
         self.universe = self.retrieve_universe()
-        starting_scene_index = self.select_starting_index(self.universe.galactic_survey)
+        starting_scene_index = self.select_starting_index()
         self.develop_game_plan(starting_scene_index)
 
     def engage(self):
@@ -30,12 +29,14 @@ class Odyssey():
         #  This changes the number (or proportion) of galaxies that must be visited.
 
         target_galaxy_count = len(new_universe.scenes)
-        intro_message = f"\n\nYour mission is to explore {target_galaxy_count} galaxies, accumulate new technolgies, and return home safely to share what you've learned."
+        intro_message = f"\n\nYour mission is to explore {target_galaxy_count} galaxies, accumulate new technologies, and return home safely to share what you've learned."
         print(intro_message)
 
         return new_universe
 
-    def select_starting_index(self, survey):
+    def select_starting_index(self):
+        survey = self.universe.galactic_survey
+
         print("\n\nThe most recent galactic survey uncovered the following galaxies.\n")
         for index, name in survey:
             print(f"{(index + 1)}) {name}")
