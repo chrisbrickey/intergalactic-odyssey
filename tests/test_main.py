@@ -10,7 +10,7 @@ def test_launch_script_output(mocker, capsys):
     captured = capsys.readouterr()
 
     # Assert
-    assert captured.out.startswith("I'm an odyssey!!!\n")
+    assert captured.out.startswith("\n\nYour mission is to explore")
 
 def test_launch_script_creates_odyssey_instance(mocker):
     # Arrange
