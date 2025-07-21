@@ -10,7 +10,7 @@ I am using test-driven development and experimenting with AI agents to write tes
 * From top-level directory: `python3 src/main.py`
 
 ## To run the test suite
-* From tests directory: `pytest`
+* `pytest`
 
 If you receive ModuleNotFoundError, confirm that the directory is included in your python path:
 `export PYTHONPATH=$PYTHONPATH:$PWD`
