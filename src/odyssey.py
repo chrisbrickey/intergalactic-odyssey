@@ -5,12 +5,12 @@ class Odyssey():
 
     def __init__(self):
         Odyssey._instance_count += 1
+        self.universe = None
 
     def run_game(self):
         self.engage()
-        the_universe = self.retrieve_universe()
-        galactic_survey = the_universe.galactic_survey
-        starting_scene_index = self.select_starting_index(galactic_survey)
+        self.universe = self.retrieve_universe()
+        starting_scene_index = self.select_starting_index()
 
     def engage(self):
         command = ''
@@ -32,7 +32,9 @@ class Odyssey():
 
         return new_universe
 
-    def select_starting_index(self, survey):
+    def select_starting_index(self):
+        survey = self.universe.galactic_survey
+
         print("\n\nThe most recent galactic survey uncovered the following galaxies.\n")
         for index, name in survey:
             print(f"{(index + 1)}) {name}")
