@@ -6,11 +6,13 @@ class Odyssey():
     def __init__(self):
         Odyssey._instance_count += 1
         self.universe = None
+        self.game_plan = None
 
     def run_game(self):
         self.engage()
         self.universe = self.retrieve_universe()
         starting_scene_index = self.select_starting_index()
+        self.develop_game_plan(starting_scene_index)
 
     def engage(self):
         command = ''
@@ -54,6 +56,11 @@ class Odyssey():
         print(f"\nBuckle up! You're headed to Galaxy {next_scene_index + 1}: {next_scene_name}.")
 
         return next_scene_index
+
+    def develop_game_plan(self, starting_scene_index):
+        remaining_indices = list(range(0, len(self.universe.scenes)))
+        remaining_indices.remove(starting_scene_index)
+        self.game_plan = [starting_scene_index] + remaining_indices
 
     @staticmethod
     def validate_input_text_to_int(input_string, min, max):

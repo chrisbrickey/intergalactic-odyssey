@@ -24,12 +24,14 @@ def universe_fixture():
 
 def test_odyssey_attributes_on_creation(new_odyssey):
     assert new_odyssey.universe is None
+    assert new_odyssey.game_plan is None
 
 # TODO: Adapt test to focus only on engage method to prevent adding to mock_user_input as game expands
 def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mocker):
     # Arrange
     mock_user_input = mocker.patch('builtins.input', side_effect=['not engage', 'still not engage', 'engage', '1'])
     mock_retrieve_universe = mocker.patch.object(new_odyssey, 'retrieve_universe')
+    mocker.patch.object(new_odyssey, 'develop_game_plan')
 
     # Act
     new_odyssey.run_game()
@@ -47,6 +49,22 @@ def test_run_game_triggers_universe_retrieval(new_odyssey, mocker):
 
     # Assert
     assert isinstance(new_odyssey.universe, Universe)
+
+# TODO: 1) improve test by testing that starting index is first
+#       2) add tests that first index is selected as starting index in game plan; maybe do these tests on the private method instead of run_game???
+def test_run_game_develops_game_plan(new_odyssey, mocker):
+    # Arrange
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
+
+    # Act
+    new_odyssey.run_game()
+    updated_game_plan = new_odyssey.game_plan
+
+    # Assert
+    assert isinstance(updated_game_plan, list)
+    assert len(set(updated_game_plan)) == len(updated_game_plan) # all unique indices
+    # TODO: Add test that all elements are in the range of the universe
+    assert len(updated_game_plan) == len(new_odyssey.universe.scenes)
 
 def test_retrieve_universe_output(new_odyssey, capsys):
     # Act
@@ -84,6 +102,7 @@ def test_select_starting_index_output_user_input_invalid(new_odyssey, universe_f
     captured = capsys.readouterr()
 
     # Assert
+    assert "Your entry is not valid so your itinerary has been selected for you." in captured.out
     assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey_fixture[result][1]}.\n")
     assert result == 0
 
@@ -100,5 +119,6 @@ def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, 
     captured = capsys.readouterr()
 
     # Assert
+    assert "Your entry is not valid so your itinerary has been selected for you." in captured.out
     assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey_fixture[result][1]}.\n")
     assert result == 0
