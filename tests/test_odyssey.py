@@ -24,12 +24,14 @@ def universe_fixture():
 
 def test_odyssey_attributes_on_creation(new_odyssey):
     assert new_odyssey.universe is None
+    assert new_odyssey.game_plan is None
 
 # TODO: Adapt test to focus only on engage method to prevent adding to mock_user_input as game expands
 def test_run_game_prompt_advances_only_with_correct_user_input(new_odyssey, mocker):
     # Arrange
     mock_user_input = mocker.patch('builtins.input', side_effect=['not engage', 'still not engage', 'engage', '1'])
     mock_retrieve_universe = mocker.patch.object(new_odyssey, 'retrieve_universe')
+    mocker.patch.object(new_odyssey, 'develop_game_plan')
 
     # Act
     new_odyssey.run_game()
@@ -84,9 +86,9 @@ def test_select_starting_index_output_user_input_invalid(new_odyssey, universe_f
     captured = capsys.readouterr()
 
     # Assert
+    assert "Your entry is not valid so your itinerary has been selected for you." in captured.out
     assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey_fixture[result][1]}.\n")
     assert result == 0
-
 
 def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, universe_fixture,mocker, capsys):
     # Arrange
@@ -100,5 +102,40 @@ def test_select_starting_index_output_with_user_input_out_of_range(new_odyssey, 
     captured = capsys.readouterr()
 
     # Assert
+    assert "Your entry is not valid so your itinerary has been selected for you." in captured.out
     assert captured.out.endswith(f"You're headed to Galaxy {result + 1}: {survey_fixture[result][1]}.\n")
     assert result == 0
+
+def test_run_game_develops_game_plan(new_odyssey, mocker):
+    # Arrange
+    mocker.patch('builtins.input', side_effect=['engage', '1'])
+
+    # Act
+    new_odyssey.run_game()
+    updated_game_plan = new_odyssey.game_plan
+
+    # Assert
+    updated_game_plan.sort()
+    assert updated_game_plan == list(range(0, len(new_odyssey.universe.scenes)))
+
+def test_game_plan_starts_with_selected_galaxy_when_user_input_is_valid(new_odyssey, mocker):
+    # Arrange; User selects galaxy 2
+    mocker.patch('builtins.input', side_effect=['engage', '2'])
+
+    # Act
+    new_odyssey.run_game()
+    updated_game_plan = new_odyssey.game_plan
+
+    # Assert; galaxy 2 (user-facing) is index 1 (zero-indexed)
+    assert updated_game_plan[0] == 1
+
+def test_game_plan_starts_with_first_galaxy_when_user_input_is_invalid(new_odyssey, mocker):
+    # Arrange; User enters invalid input for galaxy selection
+    mocker.patch('builtins.input', side_effect=['engage', 'x'])
+
+    # Act
+    new_odyssey.run_game()
+    updated_game_plan = new_odyssey.game_plan
+
+    # Assert; galaxy 1 (user-facing default) is index 0 (zero-indexed)
+    assert updated_game_plan[0] == 0
